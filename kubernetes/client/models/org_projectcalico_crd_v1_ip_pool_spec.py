@@ -56,7 +56,7 @@ class OrgProjectcalicoCrdV1IPPoolSpec(object):
         'vxlan_mode': 'vxlanMode'
     }
 
-    def __init__(self, block_size=None, cidr=None, disabled=None, ipip=None, ipip_mode=None, nat_outgoing=None, nat_outgoing=None, node_selector=None, vxlan_mode=None, local_vars_configuration=None):  # noqa: E501
+    def __init__(self, block_size=None, cidr=None, disabled=None, ipip=None, ipip_mode=None, nat_outgoing=None, node_selector=None, vxlan_mode=None, local_vars_configuration=None):  # noqa: E501
         """OrgProjectcalicoCrdV1IPPoolSpec - a model defined in OpenAPI"""  # noqa: E501
         if local_vars_configuration is None:
             local_vars_configuration = Configuration()
