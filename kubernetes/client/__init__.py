@@ -44,6 +44,8 @@ from kubernetes.client.api.certificates_api import CertificatesApi
 from kubernetes.client.api.certificates_v1_api import CertificatesV1Api
 from kubernetes.client.api.coordination_api import CoordinationApi
 from kubernetes.client.api.coordination_v1_api import CoordinationV1Api
+from kubernetes.client.api.core_api import CoreApi
+from kubernetes.client.api.core_v1_api import CoreV1Api
 from kubernetes.client.api.crd_k8s_amazonaws_com_v1alpha1_api import CrdK8sAmazonawsComV1alpha1Api
 from kubernetes.client.api.crd_projectcalico_org_v1_api import CrdProjectcalicoOrgV1Api
 from kubernetes.client.api.crd_questdb_io_v1alpha1_api import CrdQuestdbIoV1alpha1Api

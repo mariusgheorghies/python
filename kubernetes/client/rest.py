@@ -25,6 +25,7 @@ from six.moves.urllib.parse import urlencode
 import urllib3
 
 from kubernetes.client.exceptions import ApiException, ApiValueError
+from requests.utils import should_bypass_proxies
 
 
 logger = logging.getLogger(__name__)
@@ -76,6 +77,9 @@ class RESTClientObject(object):
         if configuration.retries is not None:
             addition_pool_args['retries'] = configuration.retries
 
+        if configuration.tls_server_name:
+            addition_pool_args['server_hostname'] = configuration.tls_server_name
+
         if maxsize is None:
             if configuration.connection_pool_maxsize is not None:
                 maxsize = configuration.connection_pool_maxsize
@@ -83,7 +87,7 @@ class RESTClientObject(object):
                 maxsize = 4
 
         # https pool manager
-        if configuration.proxy:
+        if configuration.proxy and not should_bypass_proxies(configuration.host, no_proxy=configuration.no_proxy or ''):
             self.pool_manager = urllib3.ProxyManager(
                 num_pools=pools_size,
                 maxsize=maxsize,
@@ -156,7 +160,12 @@ class RESTClientObject(object):
             if method in ['POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE']:
                 if query_params:
                     url += '?' + urlencode(query_params)
-                if re.search('json', headers['Content-Type'], re.IGNORECASE):
+                if (re.search('json', headers['Content-Type'], re.IGNORECASE) or
+                        headers['Content-Type'] == 'application/apply-patch+yaml'):
+                    if headers['Content-Type'] == 'application/json-patch+json':
+                        if not isinstance(body, list):
+                            headers['Content-Type'] = \
+                                'application/strategic-merge-patch+json'
                     request_body = None
                     if body is not None:
                         request_body = json.dumps(body)
